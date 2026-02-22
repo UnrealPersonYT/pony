@@ -1,7 +1,11 @@
 #include "pony.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <intrin.h>
+#ifdef _WIN32
+    #include <intrin.h>
+#else
+    #include <x86intrin.h>
+#endif
 
 int main(void){
     const size_t SIZE = 1ull << 30;   // 1 GiB
