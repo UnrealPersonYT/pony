@@ -27,11 +27,11 @@ int main(void){
 
     uint64_t cycles = end - start;
     double cpb = (double)cycles / (double)SIZE;
-    double cycles_per_block = (double)cycles / (double)(SIZE / 16);
+    double cycles_per_block = (double)cycles / (double)(SIZE / (4 * sizeof(word)));
 
     printf("Total cycles:        %llu\n", (unsigned long long)cycles);
     printf("Cycles per byte:     %.3f\n", cpb);
-    printf("Cycles per 16-byte block: %.3f\n", cycles_per_block);
+    printf("Cycles per %zu-byte block: %.3f\n", (size_t)(4 * sizeof(word)), cycles_per_block);
 
     // --- write ciphertext to file ---
     FILE *f = fopen("ct", "wb");
