@@ -42,7 +42,7 @@ static inline void pkeyx(const uint8_t key[PONY_KSIZE], word out[PONY_ROUNDS]){
     }
 }
 /// @brief The Pony stream cipher
-void* psc(void* const __restrict buf, uint32_t ctr, const size_t len, const uint8_t key[PONY_KSIZE], const word iv[PONY_NSIZE], const word keys[PONY_ROUNDS]){
+void* psc(void* const __restrict buf, word ctr, const size_t len, const uint8_t key[PONY_KSIZE], const word iv[PONY_NSIZE], const word keys[PONY_ROUNDS]){
     for(size_t i = 0; i < len; i += (4 * PONY_WORDBY), ++ctr){
         word block[4] = {iv[0], iv[1], iv[2], ctr};
         pblck(block, keys);

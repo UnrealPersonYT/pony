@@ -34,12 +34,13 @@ int main(void){
     word ctr = 0;
     size_t cycles = 0;
 
-    for(size_t i = 0; i < pages; ++i, ++ctr){
+    for(size_t i = 0; i < pages; ++i, ctr += (PAGE / 16)){
         size_t start = __rdtsc();
         psc(buf, ctr, PAGE, key, iv, keys);
         size_t end = __rdtsc();
         cycles += end - start;
         fwrite(buf, 1, PAGE, f);
+        memset(buf, 0, PAGE);
     }
 
     double cpb = (double)cycles / (double)SIZE;
