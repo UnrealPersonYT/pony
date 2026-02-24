@@ -22,25 +22,17 @@ int main(void){
         return 1;
     }
 
-    uint8_t *buf = malloc(PAGE);
-    if(!buf){
-        fprintf(stderr, "alloc failed\n");
-        fclose(f);
-        return 1;
-    }
-    memset(buf, 0, PAGE);  // initialize plaintext to zeros
-
     size_t pages = SIZE / PAGE;
     word ctr = 0;
     size_t cycles = 0;
 
     for(size_t i = 0; i < pages; ++i, ctr += (PAGE / 16)){
+        uint8_t buf[4096] = {0};
         size_t start = __rdtsc();
         psc(buf, ctr, PAGE, key, iv, keys);
         size_t end = __rdtsc();
         cycles += end - start;
         fwrite(buf, 1, PAGE, f);
-        memset(buf, 0, PAGE);
     }
 
     double cpb = (double)cycles / (double)SIZE;
@@ -50,7 +42,6 @@ int main(void){
     printf("Cycles per byte:     %.3f\n", cpb);
     printf("Cycles per %zu-byte block: %.3f\n", (size_t)(4 * sizeof(word)), cycles_per_block);
 
-    free(buf);
     fclose(f);
     return 0;
 }
